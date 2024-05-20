@@ -1,9 +1,9 @@
-import Image from "next/image";
+import Categories from "./components/Categories";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      DjangoBnb
+    <main className="max-w-[1500px] mx-auto px-6">
+      <Categories />
     </main>
   );
 }
