@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import ReservationSidebar from "@/app/components/properties/ReservationSidebar";
+
 const PropertDetailPage = () => {
   return (
     <main className="max-w-[1500px] mx-auto px-6">
@@ -41,9 +43,7 @@ const PropertDetailPage = () => {
           </p>
         </div>
 
-        <div>
-          right
-        </div>
+        <ReservationSidebar />
       </div>
     </main>
   )
