@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
 
+import ContactButton from '../../ContactButton'
+
 const LandlordDetailPage = () => {
   return (
     <main className="max-w-[1500px] mx-auto px-6 pb-6">
@@ -16,7 +18,7 @@ const LandlordDetailPage = () => {
             />
             <h1 className="mt-6 text-2xl">landlord name</h1>
 
-            Contact Button
+            <ContactButton />
           </div>
         </aside>
         
