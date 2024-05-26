@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 
 import ContactButton from '../../components/ContactButton'
+import PropertyList from '@/app/components/properties/PropertyList'
 
 const LandlordDetailPage = () => {
   return (
@@ -23,7 +24,9 @@ const LandlordDetailPage = () => {
         </aside>
         
         <div className="col-span-1 md:col-span-3 pl-0 md:pl-6">
-          right
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <PropertyList />
+          </div>
         </div>
       </div>
     </main>
