@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-import ContactButton from '../../ContactButton'
+import ContactButton from '../../components/ContactButton'
 
 const LandlordDetailPage = () => {
   return (
