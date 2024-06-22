@@ -86,6 +86,7 @@ INSTALLED_APPS = [
 
     # apps
     'useraccount',
+    'property',
 ]
 
 MIDDLEWARE = [
