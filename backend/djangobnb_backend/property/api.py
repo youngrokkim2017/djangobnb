@@ -10,7 +10,7 @@ from .serializers import PropertiesListSerializer
 @permission_classes([])
 def properties_list(request):
     properties = Property.objects.all()
-    serializer = PropertiesListSerializer(properties, any=True)
+    serializer = PropertiesListSerializer(properties, many=True)
 
     return JsonResponse({
         'data': serializer.data
