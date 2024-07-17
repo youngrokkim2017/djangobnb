@@ -3,12 +3,24 @@
 import React from 'react'
 
 import useAddPropertyModal from '@/app/hooks/useAddPropertyModal'
+import useLoginModal from '@/app/hooks/useLoginModal'
 
-const AddPropertyButton = () => {
+interface AddPropertyButtonProps {
+  userId?: string | null;
+}
+
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({
+  userId
+}) => {
+  const loginModal = useLoginModal()
   const addPropertyModal = useAddPropertyModal()
 
   const airbnbYourHome = () => {
-    addPropertyModal.open()
+    if (userId) {
+      addPropertyModal.open()
+    } else {
+       loginModal.open()
+    }
   }
 
   return (
