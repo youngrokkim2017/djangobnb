@@ -8,6 +8,7 @@ import LoginModal from "./LoginModal"
 import CustomButton from "../forms/CustomButton"
 import { useState } from "react"
 import Categories from "../addproperty/Categories"
+import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry"
 
 const AddPropertyModal = () => {
     const addPropertyModal = useAddPropertyModal()
@@ -21,6 +22,7 @@ const AddPropertyModal = () => {
     const [dataBedrooms, setDataBedrooms] = useState('')
     const [dataBathrooms, setDataBathrooms] = useState('')
     const [dataGuests, setDataGuests] = useState('')
+    const [dataCountry, setDataCountry] = useState<SelectCountryValue>()
 
     //  set data
     const setCategory = (category: string) => {
@@ -138,11 +140,18 @@ const AddPropertyModal = () => {
                 </>
             ) : currentStep == 4 ? (
                 <>
+                    <h2 className='mb-6 text-2xl'>Location</h2>
 
+                    <div className='pt-3 pb-6 space-y-4'>
+                        <SelectCountry 
+                            value={dataCountry}
+                            onChange={(value) => setDataCountry(value as SelectCountryValue)}
+                        />
+                    </div>
                 </>
             ) : (
                 <>
-                    
+
                 </>
             )}
         </>
