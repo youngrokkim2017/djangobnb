@@ -22,7 +22,13 @@ const SelectCountry: React.FC<SelectCountryProps> = ({
 
     return (
         <>
-            <>select</>
+            <Select
+                isClearable
+                placeholder="Anywhere"
+                options={getAll()}
+                value={value}
+                onChange={(value) => onChange(value as SelectCountryValue)}
+            />
         </>
     )
 }
