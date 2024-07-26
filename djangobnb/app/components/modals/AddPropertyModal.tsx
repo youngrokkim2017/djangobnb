@@ -1,17 +1,20 @@
 "use client"
 
 import Image from "next/image"
+import { ChangeEvent, useState } from "react"
+import { useRouter } from "next/navigation"
 
 import Modal from "./Modal"
 import useAddPropertyModal from "@/app/hooks/useAddPropertyModal"
 import LoginModal from "./LoginModal"
 import CustomButton from "../forms/CustomButton"
-import { useState } from "react"
 import Categories from "../addproperty/Categories"
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry"
+import apiService from "@/app/services/apiService"
 
 const AddPropertyModal = () => {
     const addPropertyModal = useAddPropertyModal()
+    const router = useRouter()
 
     // states
     const [currentStep, setCurrentStep] = useState(1)
@@ -23,10 +26,57 @@ const AddPropertyModal = () => {
     const [dataBathrooms, setDataBathrooms] = useState('')
     const [dataGuests, setDataGuests] = useState('')
     const [dataCountry, setDataCountry] = useState<SelectCountryValue>()
+    const [dataImage, setDataImage] = useState<File | null>(null)
 
     //  set data
     const setCategory = (category: string) => {
         setDataCategory(category)
+    }
+
+    const setImage = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const tmpImage = event.target.files[0];
+
+            setDataImage(tmpImage);
+        }
+    }
+
+    // handlers
+    const submitForm = async () => {
+        console.log('submitForm');
+
+        if (
+            dataCategory &&
+            dataTitle &&
+            dataDescription &&
+            dataPrice &&
+            dataCountry &&
+            dataImage
+        ) {
+            const formData = new FormData();
+            formData.append('category', dataCategory);
+            formData.append('title', dataTitle);
+            formData.append('description', dataDescription);
+            formData.append('price_per_night', dataPrice);
+            formData.append('bedrooms', dataBedrooms);
+            formData.append('bathrooms', dataBathrooms);
+            formData.append('guests', dataGuests);
+            formData.append('country', dataCountry.label);
+            formData.append('country_code', dataCountry.value);
+            formData.append('image', dataImage);
+
+            const response = await apiService.post('/api/properties/create/', formData);
+
+            if (response.success) {
+                console.log('SUCCESS');
+
+                router.push('/?added=true');
+
+                addPropertyModal.close();
+            } else {
+                console.log('Error');
+            }
+        }
     }
 
     const content = (
@@ -151,7 +201,39 @@ const AddPropertyModal = () => {
                 </>
             ) : (
                 <>
+                    <h2 className='mb-6 text-2xl'>Image</h2>
 
+                    <div className='pt-3 pb-6 space-y-4'>
+                        <div className='py-4 px-6 bg-gray-600 text-white rounded-xl'>
+                            <input
+                                type="file"
+                                accept='image/*'
+                                onChange={setImage}
+                            />
+                        </div>
+
+                        {dataImage && (
+                            <div className='w-[200px] h-[150px] relative'>
+                                <Image
+                                    fill
+                                    alt="Uploaded image"
+                                    src={URL.createObjectURL(dataImage)}
+                                    className='w-full h-full object-cover rounded-xl'
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <CustomButton
+                        label='Previous'
+                        className='mb-2 bg-black hover:bg-gray-800'
+                        onClick={() => setCurrentStep(4)}
+                    />
+
+                    <CustomButton
+                        label='Submit'
+                        onClick={submitForm}
+                    />
                 </>
             )}
         </>
