@@ -27,6 +27,7 @@ const AddPropertyModal = () => {
     const [dataGuests, setDataGuests] = useState('')
     const [dataCountry, setDataCountry] = useState<SelectCountryValue>()
     const [dataImage, setDataImage] = useState<File | null>(null)
+    const [errors, setErrors] = useState<string[]>([])
 
     //  set data
     const setCategory = (category: string) => {
@@ -75,6 +76,12 @@ const AddPropertyModal = () => {
                 addPropertyModal.close();
             } else {
                 console.log('Error');
+
+                const tmpErrors: string[] = Object.values(response).map((error: any) => {
+                    return error
+                })
+
+                setErrors(tmpErrors)
             }
         }
     }
@@ -223,6 +230,17 @@ const AddPropertyModal = () => {
                             </div>
                         )}
                     </div>
+
+                    {errors.map((error, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className='p-5 mb-4 bg-airbnb text-white rounded-xl placeholder-opacity-80'
+                            >
+                                {error}
+                            </div>
+                        )
+                    })}
 
                     <CustomButton
                         label='Previous'
