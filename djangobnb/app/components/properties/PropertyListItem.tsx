@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
 import { PropertyType } from './PropertyList'
 
@@ -10,8 +11,13 @@ interface PropertyProps {
 const PropertyListItem: React.FC<PropertyProps> = ({
   property
 }) => {
+  const router = useRouter()
+
   return (
-    <div className="cursor-pointer">
+    <div 
+      className="cursor-pointer"
+      onClick={() => router.push(`/properties/${property.id}`)}
+    >
       <div className="relative overflow-hidden aspect-square rounded-xl">
         <Image
           fill
