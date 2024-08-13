@@ -48,7 +48,9 @@ const PropertDetailPage = async ({ params }: { params: { id: string }}) => {
           </p>
         </div>
 
-        <ReservationSidebar />
+        <ReservationSidebar 
+          property={property}
+        />
       </div>
     </main>
   )
