@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Range } from 'react-date-range'
+import { differenceInDays, eachDayOfInterval } from 'date-fns'
 
 import apiService from '@/app/services/apiService'
 import useLoginModal from '@/app/hooks/useLoginModal'
@@ -36,6 +37,29 @@ const ReservationSidebar: React.FC<ReservationSidebarProps> = ({
   const [numDate, setMinDate] = useState<Date>(new Date())
   const [guests, setGuests] = useState<string>('1')
   const guestsRange = Array.from({ length: property.guests }, (_, index ) => index + 1 )
+
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
+      const dayCount = differenceInDays(
+        dateRange.endDate,
+        dateRange.startDate,
+      )
+
+      if (dayCount && property.price_per_night) {
+        const _fee = ((dayCount * property.price_per_night) / 100) * 5
+
+        setFee(_fee)
+        setTotalPrice((dayCount * property.price_per_night) + _fee)
+        setNights(dayCount)
+      } else {
+        const _fee = (property.price_per_night / 100) * 5
+
+        setFee(_fee)
+        setTotalPrice(property.price_per_night + _fee)
+        setNights(1)
+      }
+    }
+  })
 
   return (
     <aside className="mt-6 p-6 col-span-2 rounded-xl border border-gray-300 shadow-xl">
