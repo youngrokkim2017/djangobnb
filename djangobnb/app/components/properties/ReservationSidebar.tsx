@@ -1,8 +1,21 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect } from 'react'
+import { Range } from 'react-date-range'
+
+import apiService from '@/app/services/apiService'
+import useLoginModal from '@/app/hooks/useLoginModal'
+
+const initialDateRange = {
+  startDate: new Date(),
+  endDate: new Date(),
+  key: 'selection',
+}
 
 export type Property = {
   id: string;
   price_per_night: number;
+  guests:number;
 }
 
 interface ReservationSidebarProps {
@@ -11,19 +24,39 @@ interface ReservationSidebarProps {
 }
 
 const ReservationSidebar: React.FC<ReservationSidebarProps> = ({
-  property
+  property,
+  userId,
 }) => {
+  const loginModal = useLoginModal()
+
+  const [fee, setFee] = useState<number>(0)
+  const [nights, setNights] = useState<number>(1)
+  const [totalPrice, setTotalPrice] = useState<number>(0)
+  const [dateRange, setDateRange] = useState<Range>(initialDateRange)
+  const [numDate, setMinDate] = useState<Date>(new Date())
+  const [guests, setGuests] = useState<string>('1')
+  const guestsRange = Array.from({ length: property.guests }, (_, index ) => index + 1 )
+
   return (
     <aside className="mt-6 p-6 col-span-2 rounded-xl border border-gray-300 shadow-xl">
       <h2 className="mb-5 text-2xl">${property.price_per_night} per night</h2>
 
       <div className="mb-6 p-3 border border-gray-400 rounded-xl">
         <label className="mb-2 block font-bold text-xs">Guests</label>
-        <select className="w-full -ml-1 text-xm">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+
+        <select 
+          className="w-full -ml-1 text-xm"
+          value={guests}
+          onChange={(e) => setGuests(e.target.value)}
+        >
+          {guestsRange.map(number => (
+            <option
+              key={number}
+              value={number}
+            >
+              {number}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -32,20 +65,20 @@ const ReservationSidebar: React.FC<ReservationSidebarProps> = ({
       </div>
 
       <div className="mb-4 flex justify-between align-center">
-        <p>fee description</p>
-        <p>price</p>
+        <p>${property.price_per_night} * {nights} nights</p>
+        <p>${property.price_per_night * nights}</p>
       </div>
 
       <div className="mb-4 flex justify-between align-center">
         <p>Djangobnb fee description</p>
-        <p>price</p>
+        <p>${fee}</p>
       </div>
 
       <hr />
 
       <div className="mb-4 flex justify-between align-center font-bold">
         <p>total</p>
-        <p>total price</p>
+        <p>${totalPrice}</p>
       </div>
     </aside>
   )
